@@ -2,7 +2,10 @@ package com.school.service.impl;
 
 import com.school.dao.AccountInfoDOMapper;
 import com.school.domain.AccountInfoDO;
-import com.school.dto.BizResult;
+import com.school.dto.upstream.AccountInformationDto;
+import com.school.enums.CollegeEnum;
+import com.school.enums.MajorEnum;
+import com.school.enums.UniversityEnum;
 import com.school.service.AccountInfoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,18 +23,19 @@ public class AccountInfoServiceImpl implements AccountInfoService {
     @Autowired
     private AccountInfoDOMapper accountInfoDOMapper;
 
-    public BizResult<AccountInfoDO> getAccountInfoDOByUserId(Integer userId) {
+    public AccountInformationDto getAccountInfoDOByUserId(Integer userId) {
         logger.info("start get account info do by user id");
-        BizResult<AccountInfoDO> resultBiz = new BizResult<AccountInfoDO>();
-        try {
-            AccountInfoDO accountInfoDO = accountInfoDOMapper.selectByPrimaryKey(userId);
-            resultBiz.setData(accountInfoDO);
 
-        } catch (Exception e) {
-            logger.error("get account info DO failed, exception is {}", e);
-            resultBiz.setException(e);
-        }
+        AccountInfoDO accountInfoDO = accountInfoDOMapper.selectByPrimaryKey(userId);
+        AccountInformationDto accountInformationDto = AccountInformationDto.convertFromAccountInfoDO(accountInfoDO);
 
-        return resultBiz;
+        //转换code为name
+        accountInformationDto
+                .setUniversityName(UniversityEnum.getNameByCode(accountInformationDto.getUniversityCode()));
+        accountInformationDto.setCollegeName(CollegeEnum.getNameByCode(accountInformationDto.getCollegeCode()));
+        accountInformationDto.setMajorName(MajorEnum.getNameByCode(accountInformationDto.getMajorCode()));
+
+
+        return accountInformationDto;
     }
 }

@@ -10,13 +10,13 @@
     <result column="head_portrait" property="headPortrait" jdbcType="VARCHAR" />
     <result column="university_code" property="universityCode" jdbcType="VARCHAR" />
     <result column="college_code" property="collegeCode" jdbcType="VARCHAR" />
-    <result column="major" property="major" jdbcType="VARCHAR" />
+    <result column="major_code" property="majorCode" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List" >
     id, stu_code, name, nick_name, gender, head_portrait, university_code, college_code, 
-    major, create_time, modify_time
+    major_code, create_time, modify_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -31,11 +31,11 @@
   <insert id="insert" parameterType="com.school.domain.AccountInfoDO" >
     insert into school_account_info (id, stu_code, name, 
       nick_name, gender, head_portrait, 
-      university_code, college_code, major, 
+      university_code, college_code, major_code,
       create_time, modify_time)
     values (#{id,jdbcType=INTEGER}, #{stuCode,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
       #{nickName,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{headPortrait,jdbcType=VARCHAR}, 
-      #{universityCode,jdbcType=VARCHAR}, #{collegeCode,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
+      #{universityCode,jdbcType=VARCHAR}, #{collegeCode,jdbcType=VARCHAR}, #{majorCode,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.school.domain.AccountInfoDO" >
@@ -65,8 +65,8 @@
       <if test="collegeCode != null" >
         college_code,
       </if>
-      <if test="major != null" >
-        major,
+      <if test="majorCode != null" >
+        major_code,
       </if>
       <if test="createTime != null" >
         create_time,
@@ -100,8 +100,8 @@
       <if test="collegeCode != null" >
         #{collegeCode,jdbcType=VARCHAR},
       </if>
-      <if test="major != null" >
-        #{major,jdbcType=VARCHAR},
+      <if test="majorCode != null" >
+        #{majorCode,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         #{createTime,jdbcType=TIMESTAMP},
@@ -135,8 +135,8 @@
       <if test="collegeCode != null" >
         college_code = #{collegeCode,jdbcType=VARCHAR},
       </if>
-      <if test="major != null" >
-        major = #{major,jdbcType=VARCHAR},
+      <if test="majorCode != null" >
+        major_code = #{majorCode,jdbcType=VARCHAR},
       </if>
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -156,7 +156,7 @@
       head_portrait = #{headPortrait,jdbcType=VARCHAR},
       university_code = #{universityCode,jdbcType=VARCHAR},
       college_code = #{collegeCode,jdbcType=VARCHAR},
-      major = #{major,jdbcType=VARCHAR},
+      major_code = #{majorCode,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

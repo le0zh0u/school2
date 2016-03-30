@@ -1,4 +1,4 @@
-package com.school.dto;
+package com.school.dto.upstream;
 
 import com.school.enums.BizResultEnum;
 

@@ -1,5 +1,7 @@
 package com.school.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class AccountInfoDO {
@@ -19,10 +21,12 @@ public class AccountInfoDO {
 
     private String collegeCode;
 
-    private String major;
+    private String majorCode;
 
+    @JsonIgnore
     private Date createTime;
 
+    @JsonIgnore
     private Date modifyTime;
 
     public Integer getId() {
@@ -89,12 +93,12 @@ public class AccountInfoDO {
         this.collegeCode = collegeCode == null ? null : collegeCode.trim();
     }
 
-    public String getMajor() {
-        return major;
+    public String getMajorCode() {
+        return majorCode;
     }
 
-    public void setMajor(String major) {
-        this.major = major == null ? null : major.trim();
+    public void setMajorCode(String majorCode) {
+        this.majorCode = majorCode;
     }
 
     public Date getCreateTime() {

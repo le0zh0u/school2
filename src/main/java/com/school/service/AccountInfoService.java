@@ -1,7 +1,6 @@
 package com.school.service;
 
-import com.school.domain.AccountInfoDO;
-import com.school.dto.BizResult;
+import com.school.dto.upstream.AccountInformationDto;
 
 /**
  * Created by zhouchunjie on 16/3/30.
@@ -14,5 +13,5 @@ public interface AccountInfoService {
      * @param userId
      * @return
      */
-    BizResult<AccountInfoDO> getAccountInfoDOByUserId(Integer userId);
+    AccountInformationDto getAccountInfoDOByUserId(Integer userId);
 }
