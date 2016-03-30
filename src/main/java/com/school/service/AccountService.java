@@ -7,6 +7,12 @@ import com.school.domain.AccountDO;
  */
 public interface AccountService {
 
+    /**
+     * 通过主键id获取账户信息
+     *
+     * @param id
+     * @return
+     */
     AccountDO getAccountDOById(Integer id);
 
 }
