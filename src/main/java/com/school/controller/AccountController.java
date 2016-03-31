@@ -36,6 +36,11 @@ public class AccountController {
         return accountService.getAccountDOById(1);
     }
 
+    /**
+     * 获取用户信息
+     * @param accountId
+     * @return
+     */
     @RequestMapping(value = "/info/{accountId}", method = RequestMethod.GET)
     @ResponseBody
     public BizResult<AccountInformationDto> getAccountInfo(@PathVariable("accountId") Integer accountId) {
@@ -54,4 +59,6 @@ public class AccountController {
         }
         return result;
     }
+
+
 }

@@ -1,5 +1,7 @@
 package com.school.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class MessageDO {
@@ -13,8 +15,10 @@ public class MessageDO {
 
     private Integer status;
 
+    @JsonIgnore
     private Date createTime;
 
+    @JsonIgnore
     private Date modifyTime;
 
     public Integer getId() {
