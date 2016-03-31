@@ -1,5 +1,7 @@
 package com.school.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 public class CommentDO {
@@ -9,14 +11,18 @@ public class CommentDO {
 
     private Integer criticsId;
 
+    private String content;
+
     private Integer status;
 
     private Integer type;
 
-    private Integer markReak;
+    private Integer markRead;
 
+    @JsonIgnore
     private Date createTime;
 
+    @JsonIgnore
     private Date modifyTime;
 
     public Integer getId() {
@@ -59,12 +65,12 @@ public class CommentDO {
         this.type = type;
     }
 
-    public Integer getMarkReak() {
-        return markReak;
+    public Integer getMarkRead() {
+        return markRead;
     }
 
-    public void setMarkReak(Integer markReak) {
-        this.markReak = markReak;
+    public void setMarkRead(Integer markRead) {
+        this.markRead = markRead;
     }
 
     public Date getCreateTime() {
@@ -81,5 +87,13 @@ public class CommentDO {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }
