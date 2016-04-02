@@ -1,6 +1,7 @@
 package com.school.dao;
 
 import com.school.domain.CommentDO;
+import com.school.dto.MessageCriticsDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -24,5 +25,5 @@ public interface CommentDOMapper {
      * @param messageIdList
      * @return
      */
-    List<CommentDO> findCommentListByMessageIdList(@Param("messageIdList") List<Integer> messageIdList);
+    List<MessageCriticsDto> findCommentListByMessageIdList(@Param("messageIdList") List<Integer> messageIdList);
 }

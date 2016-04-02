@@ -6,6 +6,7 @@ import com.school.dao.MessageImageRelationDOMapper;
 import com.school.domain.CommentDO;
 import com.school.domain.MessageDO;
 import com.school.domain.MessageImageRelationDO;
+import com.school.dto.MessageCriticsDto;
 import com.school.dto.upstream.MessageItemDto;
 import com.school.enums.CommentTypeEnum;
 import com.school.service.MessageService;
@@ -72,15 +73,15 @@ public class MessageServiceImpl implements MessageService {
         }
 
         //通过messageIdList 获取评论
-        List<CommentDO> commentDOList = commentDOMapper.findCommentListByMessageIdList(messageIdList);
+        List<MessageCriticsDto> commentDOList = commentDOMapper.findCommentListByMessageIdList(messageIdList);
 
         //将commentList转换成map
-        Map<Integer, List<CommentDO>> commentDOMap = new HashMap<Integer, List<CommentDO>>();
+        Map<Integer, List<MessageCriticsDto>> commentDOMap = new HashMap<Integer, List<MessageCriticsDto>>();
         if (CollectionUtils.isNotEmpty(commentDOList)) {
-            for (CommentDO commentDO : commentDOList) {
-                List<CommentDO> list = commentDOMap.get(commentDO.getMessageId());
+            for (MessageCriticsDto commentDO : commentDOList) {
+                List<MessageCriticsDto> list = commentDOMap.get(commentDO.getMessageId());
                 if (CollectionUtils.isEmpty(list)) {
-                    list = new ArrayList<CommentDO>();
+                    list = new ArrayList<MessageCriticsDto>();
                 }
                 list.add(commentDO);
 
@@ -108,15 +109,15 @@ public class MessageServiceImpl implements MessageService {
             messageItemDto.setImageList(imageUrlList);
 
             // 设置返回的红心,关注以及评论
-            List<CommentDO> commentDOs = commentDOMap.get(messageDO.getId());
-            List<CommentDO> commentDOsTemp = new ArrayList<CommentDO>();
-            if (commentDOs != null && CollectionUtils.isNotEmpty(commentDOs)){
-                for(CommentDO commentDO : commentDOs){
-                    if (commentDO.getType().equals(CommentTypeEnum.LIKE.getCode())){
-                        likeCount ++;
-                    }else if (commentDO.getType().equals(CommentTypeEnum.WATCH.getCode())){
+            List<MessageCriticsDto> commentDOs = commentDOMap.get(messageDO.getId());
+            List<MessageCriticsDto> commentDOsTemp = new ArrayList<MessageCriticsDto>();
+            if (commentDOs != null && CollectionUtils.isNotEmpty(commentDOs)) {
+                for (MessageCriticsDto commentDO : commentDOs) {
+                    if (commentDO.getType().equals(CommentTypeEnum.LIKE.getCode())) {
+                        likeCount++;
+                    } else if (commentDO.getType().equals(CommentTypeEnum.WATCH.getCode())) {
                         watchCount++;
-                    }else if(commentDO.getType().equals(CommentTypeEnum.COMMENT.getCode())){
+                    } else if (commentDO.getType().equals(CommentTypeEnum.COMMENT.getCode())) {
                         commentDOsTemp.add(commentDO);
                     }
                 }

@@ -2,6 +2,7 @@ package com.school.dto.upstream;
 
 import com.school.domain.CommentDO;
 import com.school.domain.MessageDO;
+import com.school.dto.MessageCriticsDto;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class MessageItemDto extends MessageDO {
     private int likeCount = 0;
     private int commentCount = 0;
     private int watchCount = 0;
-    private List<CommentDO> commentList;
+    private List<MessageCriticsDto> commentList;
 
     public List<String> getImageList() {
         return imageList;
@@ -40,11 +41,11 @@ public class MessageItemDto extends MessageDO {
         this.commentCount = commentCount;
     }
 
-    public List<CommentDO> getCommentList() {
+    public List<MessageCriticsDto> getCommentList() {
         return commentList;
     }
 
-    public void setCommentList(List<CommentDO> commentList) {
+    public void setCommentList(List<MessageCriticsDto> commentList) {
         this.commentList = commentList;
     }
 
