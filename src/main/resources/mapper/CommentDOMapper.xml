@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.school.domain.CommentDO">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="message_id" property="messageId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="critics_id" property="criticsId" jdbcType="INTEGER"/>
         <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
@@ -13,7 +14,7 @@
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, message_id, critics_id,content, status, type, mark_read, create_time, modify_time
+    id, message_id,user_id, critics_id,content, status, type, mark_read, create_time, modify_time
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -26,10 +27,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.school.domain.CommentDO">
-    insert into school_comment (id, message_id, critics_id, content,
+    insert into school_comment (id, message_id,user_id, critics_id, content,
       status, type, mark_read,
       create_time, modify_time)
-    values (#{id,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{criticsId,jdbcType=INTEGER}, #{content,jdbc=VARCHAR},
+    values (#{id,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER},#{userId,jdbcType=INTEGER}, #{criticsId,jdbcType=INTEGER}, #{content,jdbc=VARCHAR},
       #{status,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{markRead,jdbcType=INTEGER},
       #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
   </insert>
@@ -41,6 +42,9 @@
             </if>
             <if test="messageId != null">
                 message_id,
+            </if>
+            <if test="userId != null">
+                user_id,
             </if>
             <if test="criticsId != null">
                 critics_id,
@@ -71,6 +75,9 @@
             <if test="messageId != null">
                 #{messageId,jdbcType=INTEGER},
             </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
             <if test="criticsId != null">
                 #{criticsId,jdbcType=INTEGER},
             </if>
@@ -100,6 +107,9 @@
             <if test="messageId != null">
                 message_id = #{messageId,jdbcType=INTEGER},
             </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
             <if test="criticsId != null">
                 critics_id = #{criticsId,jdbcType=INTEGER},
             </if>
@@ -127,6 +137,7 @@
     <update id="updateByPrimaryKey" parameterType="com.school.domain.CommentDO">
     update school_comment
     set message_id = #{messageId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
       critics_id = #{criticsId,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       status = #{status,jdbcType=INTEGER},
@@ -140,11 +151,21 @@
     <select id="findCommentListByMessageIdList" resultType="com.school.dto.MessageCriticsDto">
         select
         c.id as id, c.message_id as messageId, c.critics_id as criticsId,c.content as content, c.status as status,
-        c.type as type, c.mark_read as markRead, ai.nick_name as criticsNickName,ai.head_portrait as criticsHeadPortrait
+        c.type as type, c.mark_read as markRead,c.create_time as createTime, ai.nick_name as
+        criticsNickName,ai.head_portrait as criticsHeadPortrait
         from school_comment c LEFT JOIN school_account_info ai ON c.critics_id = ai.id
         where status = 1 and message_id IN
         <foreach collection="messageIdList" index="index" item="messageId" open="(" close=")" separator=",">
             #{messageId}
         </foreach>
+    </select>
+
+    <select id="findUnReadCommentListByUserId" resultType="com.school.dto.MessageCriticsDto">
+        select
+        c.id as id, c.message_id as messageId, c.critics_id as criticsId,c.content as content, c.status as status,
+        c.type as type, c.mark_read as markRead,c.create_time as createTime, ai.nick_name as
+        criticsNickName,ai.head_portrait as criticsHeadPortrait
+        from school_comment c LEFT JOIN school_account_info ai ON c.critics_id = ai.id
+        where status = 1 and user_id = #{userId, jdbcType=INTEGER} and mark_read = 0;
     </select>
 </mapper>

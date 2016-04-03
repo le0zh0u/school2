@@ -2,6 +2,8 @@ package com.school.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.Date;
+
 /**
  * Created by zhouchunjie on 16/4/1.
  */
@@ -27,6 +29,8 @@ public class MessageCriticsDto {
 
     @JsonIgnore
     private Integer markRead;
+
+    private Date createTime;
 
     public String getCriticsNickName() {
         return criticsNickName;
@@ -98,5 +102,13 @@ public class MessageCriticsDto {
 
     public void setMarkRead(Integer markRead) {
         this.markRead = markRead;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

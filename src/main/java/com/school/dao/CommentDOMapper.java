@@ -26,4 +26,12 @@ public interface CommentDOMapper {
      * @return
      */
     List<MessageCriticsDto> findCommentListByMessageIdList(@Param("messageIdList") List<Integer> messageIdList);
+
+    /**
+     * 通过userid获取未读的评论
+     *
+     * @param userId
+     * @return
+     */
+    List<MessageCriticsDto> findUnReadCommentListByUserId(@Param("userId") Integer userId);
 }
