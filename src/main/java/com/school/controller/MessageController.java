@@ -25,6 +25,11 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
+    /**
+     * 查看自己发的消息以及他人评论等
+     * @param userId
+     * @return
+     */
     @RequestMapping("/list/{userId}")
     @ResponseBody
     public BizResult<List<MessageItemDto>> getMessageList(@PathVariable("userId") Integer userId) {

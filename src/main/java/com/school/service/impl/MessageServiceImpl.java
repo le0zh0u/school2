@@ -3,11 +3,11 @@ package com.school.service.impl;
 import com.school.dao.CommentDOMapper;
 import com.school.dao.MessageDOMapper;
 import com.school.dao.MessageImageRelationDOMapper;
-import com.school.domain.CommentDO;
 import com.school.domain.MessageDO;
 import com.school.domain.MessageImageRelationDO;
 import com.school.dto.MessageCriticsDto;
 import com.school.dto.upstream.MessageItemDto;
+import com.school.dto.upstream.WatchedMessageItemDto;
 import com.school.enums.CommentTypeEnum;
 import com.school.service.MessageService;
 import org.apache.commons.collections.CollectionUtils;
@@ -56,21 +56,7 @@ public class MessageServiceImpl implements MessageService {
         }
 
         //通过messageIdList获取message图片
-        List<MessageImageRelationDO> messageImageRelationDOList =
-                messageImageRelationDOMapper.findMessageImageRelationListByMessageIdList(messageIdList);
-
-        //将list转成map,key为messageId, value为imageUrl
-        Map<Integer, List<String>> messageImageRelationMap = new HashMap<Integer, List<String>>();
-        if (CollectionUtils.isNotEmpty(messageImageRelationDOList)) {
-            for (MessageImageRelationDO messageImageRelationDO : messageImageRelationDOList) {
-                List<String> imageList = messageImageRelationMap.get(messageImageRelationDO.getMessageId());
-                if (imageList == null) {
-                    imageList = new ArrayList<String>();
-                }
-                imageList.add(messageImageRelationDO.getImageThumbnailUrl());
-                messageImageRelationMap.put(messageImageRelationDO.getMessageId(), imageList);
-            }
-        }
+        Map<Integer, List<String>> messageImageRelationMap = getMessageImageMap(messageIdList);
 
         //通过messageIdList 获取评论
         List<MessageCriticsDto> commentDOList = commentDOMapper.findCommentListByMessageIdList(messageIdList);
@@ -131,5 +117,57 @@ public class MessageServiceImpl implements MessageService {
         }
 
         return messageItemDtoList;
+    }
+
+    private Map<Integer, List<String>> getMessageImageMap(List<Integer> messageIdList) {
+        Map<Integer, List<String>> messageImageRelationMap = new HashMap<Integer, List<String>>();
+
+        if (CollectionUtils.isEmpty(messageIdList)) {
+            return messageImageRelationMap;
+        }
+        //通过messageIdList获取message图片
+        List<MessageImageRelationDO> messageImageRelationDOList =
+                messageImageRelationDOMapper.findMessageImageRelationListByMessageIdList(messageIdList);
+
+        //将list转成map,key为messageId, value为imageUrl
+        if (CollectionUtils.isNotEmpty(messageImageRelationDOList)) {
+            for (MessageImageRelationDO messageImageRelationDO : messageImageRelationDOList) {
+                List<String> imageList = messageImageRelationMap.get(messageImageRelationDO.getMessageId());
+                if (imageList == null) {
+                    imageList = new ArrayList<String>();
+                }
+                imageList.add(messageImageRelationDO.getImageThumbnailUrl());
+                messageImageRelationMap.put(messageImageRelationDO.getMessageId(), imageList);
+            }
+        }
+
+        return messageImageRelationMap;
+    }
+
+    public List<WatchedMessageItemDto> findWatchedMessageByAccountId(Integer accountId) {
+
+        //通过用户id,获取已关注的message
+        List<Integer> watchedMessageIdList = commentDOMapper.findWatchedMessageIdListByUserId(accountId);
+
+        if (CollectionUtils.isEmpty(watchedMessageIdList)) {
+            //无关注话题
+            return new ArrayList<WatchedMessageItemDto>();
+        }
+
+        //通过messageIdList获取完整的message
+        List<WatchedMessageItemDto> result = messageDOMapper.findWatchMessageByMessageIdList(watchedMessageIdList);
+
+        //通过messageIdList获取message图片
+        Map<Integer, List<String>> messageImageRelationMap = getMessageImageMap(watchedMessageIdList);
+
+        //遍历messageList,放入图片
+        for (WatchedMessageItemDto watchedMessageItemDto : result) {
+            List<String> imageList = messageImageRelationMap.get(watchedMessageItemDto.getId());
+            if (CollectionUtils.isEmpty(imageList)) {
+                continue;
+            }
+            watchedMessageItemDto.setImageList(imageList);
+        }
+        return result;
     }
 }

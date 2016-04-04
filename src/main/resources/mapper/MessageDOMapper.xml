@@ -121,4 +121,14 @@
         from school_message
         where user_id = #{userId,jdbcType=INTEGER}
     </select>
+
+    <select id="findWatchMessageByMessageIdList" resultType="com.school.dto.upstream.WatchedMessageItemDto">
+        select m.id as id, m.user_id as userId, m.content as content, m.type as type, m.status as status, m.create_time as createTime, m.modify_time as modifyTime,
+        ai.nick_name as nickName, ai.id as userId, ai.head_portrait as headPortrait
+        from school_message m LEFT JOIN school_account_info ai ON m.user_id = ai.id
+        WHERE m.status = 1 and m.id in
+        <foreach collection="messageIdList" item="messageId" open="(" close=")" index="index" separator=",">
+            #{messageId}
+        </foreach>
+    </select>
 </mapper>

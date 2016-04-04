@@ -17,6 +17,8 @@ public class MessageItemDto extends MessageDO {
     private int watchCount = 0;
     private List<MessageCriticsDto> commentList;
 
+
+
     public List<String> getImageList() {
         return imageList;
     }

@@ -4,10 +4,12 @@ import com.school.domain.AccountDO;
 import com.school.dto.MessageCriticsDto;
 import com.school.dto.upstream.AccountInformationDto;
 import com.school.dto.upstream.BizResult;
+import com.school.dto.upstream.WatchedMessageItemDto;
 import com.school.enums.BizResultEnum;
 import com.school.service.AccountInfoService;
 import com.school.service.AccountService;
 import com.school.service.CommentService;
+import com.school.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class AccountController {
     private AccountInfoService accountInfoService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private MessageService messageService;
 
     @RequestMapping("/")
     @ResponseBody
@@ -67,6 +71,12 @@ public class AccountController {
         return result;
     }
 
+    /**
+     * 获取个人未读评论
+     *
+     * @param accountId
+     * @return
+     */
     @RequestMapping(value = "unread/{accountId}", method = RequestMethod.GET)
     @ResponseBody
     public BizResult<List<MessageCriticsDto>> getUserComments(@PathVariable("accountId") Integer accountId) {
@@ -79,6 +89,32 @@ public class AccountController {
             result.setData(criticsDtoList);
         } catch (Exception e) {
             logger.error("get user unread comment failed.", e);
+            result.setException(e);
+        }
+
+        return result;
+    }
+
+    /**
+     * 获取关注的话题
+     *
+     * @param accountId
+     * @return
+     */
+    @RequestMapping(value = "/watch/{accountId}")
+    @ResponseBody
+    public BizResult<List<WatchedMessageItemDto>> getUserWatchMessage(@PathVariable("accountId") Integer accountId) {
+        logger.info("get user watch message , user id is {}", accountId);
+
+        BizResult<List<WatchedMessageItemDto>> result = new BizResult<List<WatchedMessageItemDto>>();
+
+        try {
+
+            List<WatchedMessageItemDto> watchMessages = messageService.findWatchedMessageByAccountId(accountId);
+
+            result.setData(watchMessages);
+        } catch (Exception e) {
+            logger.error("get user watch message failed", e);
             result.setException(e);
         }
 

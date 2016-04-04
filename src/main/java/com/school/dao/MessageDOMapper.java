@@ -1,6 +1,7 @@
 package com.school.dao;
 
 import com.school.domain.MessageDO;
+import com.school.dto.upstream.WatchedMessageItemDto;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -25,4 +26,11 @@ public interface MessageDOMapper {
      * @return
      */
     List<MessageDO> findMessageListByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 通过
+     * @param watchedMessageIdList
+     * @return
+     */
+    List<WatchedMessageItemDto> findWatchMessageByMessageIdList(@Param("messageIdList") List<Integer> watchedMessageIdList);
 }

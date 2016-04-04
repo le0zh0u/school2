@@ -34,4 +34,12 @@ public interface CommentDOMapper {
      * @return
      */
     List<MessageCriticsDto> findUnReadCommentListByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 通过用户id获取用户关注的消息id列表
+     *
+     * @param accountId
+     * @return
+     */
+    List<Integer> findWatchedMessageIdListByUserId(@Param("accountId") Integer accountId);
 }

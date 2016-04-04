@@ -1,6 +1,7 @@
 package com.school.service;
 
 import com.school.dto.upstream.MessageItemDto;
+import com.school.dto.upstream.WatchedMessageItemDto;
 
 import java.util.List;
 
@@ -11,4 +12,11 @@ public interface MessageService {
 
     List<MessageItemDto> findMessageListByUserId(Integer userId);
 
+    /**
+     * 获取关注的话题
+     *
+     * @param accountId
+     * @return
+     */
+    List<WatchedMessageItemDto> findWatchedMessageByAccountId(Integer accountId);
 }
