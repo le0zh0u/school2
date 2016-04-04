@@ -17,6 +17,8 @@ public class MessageDO {
 
     private Integer status;
 
+    private String universityCode;
+
     @JsonIgnore
     private Date createTime;
 
@@ -77,5 +79,13 @@ public class MessageDO {
 
     public void setModifyTime(Date modifyTime) {
         this.modifyTime = modifyTime;
+    }
+
+    public String getUniversityCode() {
+        return universityCode;
+    }
+
+    public void setUniversityCode(String universityCode) {
+        this.universityCode = universityCode;
     }
 }

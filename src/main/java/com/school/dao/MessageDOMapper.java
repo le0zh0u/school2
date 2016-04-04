@@ -29,8 +29,19 @@ public interface MessageDOMapper {
 
     /**
      * 通过
+     *
      * @param watchedMessageIdList
      * @return
      */
-    List<WatchedMessageItemDto> findWatchMessageByMessageIdList(@Param("messageIdList") List<Integer> watchedMessageIdList);
+    List<WatchedMessageItemDto> findWatchMessageByMessageIdList(
+            @Param("messageIdList") List<Integer> watchedMessageIdList);
+
+    /**
+     * 通过高校编号和类型获取消息列表
+     *
+     * @param universityCode
+     * @param typeId
+     * @return
+     */
+    List<MessageDO> findMessageListByUniversityAndType(@Param("universityCode") String universityCode, @Param("typeId") Integer typeId);
 }

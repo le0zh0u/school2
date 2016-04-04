@@ -1,8 +1,10 @@
 package com.school.service.impl;
 
+import com.school.dao.AccountInfoDOMapper;
 import com.school.dao.CommentDOMapper;
 import com.school.dao.MessageDOMapper;
 import com.school.dao.MessageImageRelationDOMapper;
+import com.school.domain.AccountInfoDO;
 import com.school.domain.MessageDO;
 import com.school.domain.MessageImageRelationDO;
 import com.school.dto.MessageCriticsDto;
@@ -35,6 +37,8 @@ public class MessageServiceImpl implements MessageService {
     private MessageImageRelationDOMapper messageImageRelationDOMapper;
     @Autowired
     private CommentDOMapper commentDOMapper;
+    @Autowired
+    private AccountInfoDOMapper accountInfoDOMapper;
 
     public List<MessageItemDto> findMessageListByUserId(Integer userId) {
 
@@ -75,11 +79,22 @@ public class MessageServiceImpl implements MessageService {
             }
         }
 
-        int likeCount = 0;
-        int watchCount = 0;
+        messageItemDtoList = convertMessageDO2MessageItemDto(messageDOList, messageImageRelationMap, commentDOMap);
 
+        return messageItemDtoList;
+    }
+
+    private List<MessageItemDto> convertMessageDO2MessageItemDto(List<MessageDO> messageDOList,
+            Map<Integer, List<String>> messageImageRelationMap, Map<Integer, List<MessageCriticsDto>> commentDOMap) {
+        List<MessageItemDto> list = new ArrayList<MessageItemDto>();
+        if (CollectionUtils.isEmpty(messageDOList)) {
+            return list;
+        }
         //遍历messageList 转换成 messageItemDto
         for (MessageDO messageDO : messageDOList) {
+            int likeCount = 0;
+            int watchCount = 0;
+
             MessageItemDto messageItemDto = new MessageItemDto();
 
             messageItemDto.setId(messageDO.getId());
@@ -88,35 +103,43 @@ public class MessageServiceImpl implements MessageService {
             messageItemDto.setStatus(messageDO.getStatus());
             messageItemDto.setType(messageDO.getType());
 
-            List<String> imageUrlList = messageImageRelationMap.get(messageDO.getId());
-            if (imageUrlList == null) {
-                imageUrlList = new ArrayList<String>();
-            }
-            messageItemDto.setImageList(imageUrlList);
-
-            // 设置返回的红心,关注以及评论
-            List<MessageCriticsDto> commentDOs = commentDOMap.get(messageDO.getId());
-            List<MessageCriticsDto> commentDOsTemp = new ArrayList<MessageCriticsDto>();
-            if (commentDOs != null && CollectionUtils.isNotEmpty(commentDOs)) {
-                for (MessageCriticsDto commentDO : commentDOs) {
-                    if (commentDO.getType().equals(CommentTypeEnum.LIKE.getCode())) {
-                        likeCount++;
-                    } else if (commentDO.getType().equals(CommentTypeEnum.WATCH.getCode())) {
-                        watchCount++;
-                    } else if (commentDO.getType().equals(CommentTypeEnum.COMMENT.getCode())) {
-                        commentDOsTemp.add(commentDO);
-                    }
+            List<String> imageUrlList = new ArrayList<String>();
+            if (messageImageRelationMap != null) {
+                imageUrlList = messageImageRelationMap.get(messageDO.getId());
+                if (imageUrlList == null) {
+                    imageUrlList = new ArrayList<String>();
                 }
             }
-            messageItemDto.setCommentCount(commentDOsTemp.size());
+            messageItemDto.setImageList(imageUrlList);
+            // 设置返回的红心,关注以及评论
+            List<MessageCriticsDto> commentDOsTemp = new ArrayList<MessageCriticsDto>();
+            if (commentDOMap != null) {
+                List<MessageCriticsDto> commentDOs = commentDOMap.get(messageDO.getId());
+                if (commentDOs != null && CollectionUtils.isNotEmpty(commentDOs)) {
+                    for (MessageCriticsDto commentDO : commentDOs) {
+                        if (commentDO.getType().equals(CommentTypeEnum.LIKE.getCode())) {
+                            likeCount++;
+                        } else if (commentDO.getType().equals(CommentTypeEnum.WATCH.getCode())) {
+                            watchCount++;
+                        } else if (commentDO.getType().equals(CommentTypeEnum.COMMENT.getCode())) {
+                            commentDOsTemp.add(commentDO);
+                        }
+                    }
+                }
+                messageItemDto.setCommentCount(commentDOsTemp.size());
+            } else {
+                messageItemDto.setCommentCount(0);
+            }
             messageItemDto.setCommentList(commentDOsTemp);
             messageItemDto.setLikeCount(likeCount);
             messageItemDto.setWatchCount(watchCount);
 
-            messageItemDtoList.add(messageItemDto);
+            messageItemDto.setUniversityCode(messageDO.getUniversityCode());
+
+            list.add(messageItemDto);
         }
 
-        return messageItemDtoList;
+        return list;
     }
 
     private Map<Integer, List<String>> getMessageImageMap(List<Integer> messageIdList) {
@@ -169,5 +192,39 @@ public class MessageServiceImpl implements MessageService {
             watchedMessageItemDto.setImageList(imageList);
         }
         return result;
+    }
+
+    public List<MessageItemDto> findMessageListByAccountAndType(Integer accountId, Integer typeId) {
+
+        List<MessageItemDto> list = new ArrayList<MessageItemDto>();
+
+        //获取account信息
+        AccountInfoDO accountInfoDO = accountInfoDOMapper.selectByPrimaryKey(accountId);
+        if (accountInfoDO == null) {
+            return list;
+        }
+
+        //获取用户所在大学code
+        String universityCode = accountInfoDO.getUniversityCode();
+
+        //通过大学code和消息类型获取消息列表
+        List<MessageDO> memberDOList = messageDOMapper.findMessageListByUniversityAndType(universityCode, typeId);
+        if (CollectionUtils.isEmpty(memberDOList)) {
+            return list;
+        }
+
+        //获取符合条件的messageIdList
+        List<Integer> messageIdList = new ArrayList<Integer>();
+        for (MessageDO messageDO : memberDOList) {
+            messageIdList.add(messageDO.getId());
+        }
+
+        //通过messageIdList获取message图片
+        Map<Integer, List<String>> messageImageRelationMap = getMessageImageMap(messageIdList);
+
+        //将memberDO转成memberItemDto
+        list = convertMessageDO2MessageItemDto(memberDOList, messageImageRelationMap, null);
+
+        return list;
     }
 }

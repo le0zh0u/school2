@@ -7,11 +7,12 @@
         <result column="content" property="content" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="INTEGER"/>
         <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="university_code" property="universityCode" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, user_id, content, type, status, create_time, modify_time
+    id, user_id, content, type, status,university_code, create_time, modify_time
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -25,10 +26,10 @@
   </delete>
     <insert id="insert" parameterType="com.school.domain.MessageDO">
     insert into school_message (id, user_id, content, 
-      type, status, create_time, 
+      type, status, university_code,create_time,
       modify_time)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{universityCode, jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
       #{modifyTime,jdbcType=TIMESTAMP})
   </insert>
     <insert id="insertSelective" parameterType="com.school.domain.MessageDO">
@@ -48,6 +49,9 @@
             </if>
             <if test="status != null">
                 status,
+            </if>
+            <if test="universityCode != null">
+                university_code,
             </if>
             <if test="createTime != null">
                 create_time,
@@ -72,6 +76,9 @@
             <if test="status != null">
                 #{status,jdbcType=INTEGER},
             </if>
+            <if test="universityCode != null">
+                #{universityCode,jdbcType=VARCHAR},
+            </if>
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -95,6 +102,9 @@
             <if test="status != null">
                 status = #{status,jdbcType=INTEGER},
             </if>
+            <if test="universityCode != null">
+                university_code = #{universityCode,jdbcType=VARCHAR},
+            </if>
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
@@ -110,6 +120,7 @@
       content = #{content,jdbcType=VARCHAR},
       type = #{type,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
+      university_code = #{universityCode,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       modify_time = #{modifyTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
@@ -122,13 +133,28 @@
         where user_id = #{userId,jdbcType=INTEGER}
     </select>
 
-    <select id="findWatchMessageByMessageIdList" resultType="com.school.dto.upstream.WatchedMessageItemDto">
-        select m.id as id, m.user_id as userId, m.content as content, m.type as type, m.status as status, m.create_time as createTime, m.modify_time as modifyTime,
+    <sql id="Watched_Message_Item_Column_List">
+        m.id as id, m.user_id as userId, m.content as content, m.type as type, m.status as status,
+        m.university_code as universityCode, m.create_time as createTime, m.modify_time as modifyTime,
         ai.nick_name as nickName, ai.id as userId, ai.head_portrait as headPortrait
+
+    </sql>
+
+    <select id="findWatchMessageByMessageIdList" resultType="com.school.dto.upstream.WatchedMessageItemDto">
+        select
+        <include refid="Watched_Message_Item_Column_List"/>
         from school_message m LEFT JOIN school_account_info ai ON m.user_id = ai.id
         WHERE m.status = 1 and m.id in
         <foreach collection="messageIdList" item="messageId" open="(" close=")" index="index" separator=",">
             #{messageId}
         </foreach>
+    </select>
+
+    <select id="findMessageListByUniversityAndType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from school_message
+        WHERE status = 1 and university_code = #{universityCode, jdbcType=VARCHAR} AND type =
+        #{typeId, jdbcType=INTEGER}
     </select>
 </mapper>

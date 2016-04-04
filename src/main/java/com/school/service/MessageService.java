@@ -19,4 +19,12 @@ public interface MessageService {
      * @return
      */
     List<WatchedMessageItemDto> findWatchedMessageByAccountId(Integer accountId);
+
+    /**
+     * 通过用户id和消息类型获取消息列表
+     * @param accountId
+     * @param typeId
+     * @return
+     */
+    List<MessageItemDto> findMessageListByAccountAndType(Integer accountId, Integer typeId);
 }

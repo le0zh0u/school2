@@ -27,23 +27,47 @@ public class MessageController {
 
     /**
      * 查看自己发的消息以及他人评论等
-     * @param userId
+     *
+     * @param accountId
      * @return
      */
-    @RequestMapping("/list/{userId}")
+    @RequestMapping("/history/{accountId}")
     @ResponseBody
-    public BizResult<List<MessageItemDto>> getMessageList(@PathVariable("userId") Integer userId) {
+    public BizResult<List<MessageItemDto>> getHistoryMessageList(@PathVariable("accountId") Integer accountId) {
         logger.info("start get message list by userId");
         BizResult<List<MessageItemDto>> result = new BizResult<List<MessageItemDto>>();
         try {
-            List<MessageItemDto> messageList = messageService.findMessageListByUserId(userId);
+            List<MessageItemDto> messageList = messageService.findMessageListByUserId(accountId);
 
             result.setData(messageList);
         } catch (Exception e) {
-            logger.error("get message list failed.", e);
+            logger.error("get history message list failed.", e);
             result.setException(e);
         }
 
+        return result;
+    }
+
+    /**
+     * 通过类别和用户返回圈子内容
+     *
+     * @param accountId
+     * @param typeId
+     * @return
+     */
+    @RequestMapping("/{typeId}/{accountId}")
+    @ResponseBody
+    public BizResult<List<MessageItemDto>> getMessageListByAccountAndType(@PathVariable() Integer accountId,
+            @PathVariable Integer typeId) {
+        logger.info("start get message list by account and type");
+        BizResult<List<MessageItemDto>> result = new BizResult<List<MessageItemDto>>();
+        try {
+            List<MessageItemDto> messageItemDtoList = messageService.findMessageListByAccountAndType(accountId, typeId);
+            result.setData(messageItemDtoList);
+        } catch (Exception e) {
+            logger.error("get message list by account and type",e);
+            result.setException(e);
+        }
         return result;
     }
 }

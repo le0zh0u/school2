@@ -1,6 +1,5 @@
 package com.school.dto.upstream;
 
-import com.school.domain.CommentDO;
 import com.school.domain.MessageDO;
 import com.school.dto.MessageCriticsDto;
 
@@ -16,8 +15,6 @@ public class MessageItemDto extends MessageDO {
     private int commentCount = 0;
     private int watchCount = 0;
     private List<MessageCriticsDto> commentList;
-
-
 
     public List<String> getImageList() {
         return imageList;
