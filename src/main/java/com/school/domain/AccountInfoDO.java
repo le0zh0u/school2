@@ -1,10 +1,12 @@
 package com.school.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
 public class AccountInfoDO {
+    @JsonProperty("accountId")
     private Integer id;
 
     private String stuCode;
