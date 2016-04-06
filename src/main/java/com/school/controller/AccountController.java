@@ -1,6 +1,7 @@
 package com.school.controller;
 
 import com.school.domain.AccountDO;
+import com.school.domain.AccountInfoDO;
 import com.school.dto.MessageCriticsDto;
 import com.school.dto.upstream.AccountInformationDto;
 import com.school.dto.upstream.BizResult;
@@ -72,6 +73,21 @@ public class AccountController {
 
         return result;
 
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    @ResponseBody
+    public BizResult<String> updateAccount(AccountInfoDO accountInfoDO) {
+        logger.info("start update  Account");
+        BizResult<String> result = new BizResult<String>();
+        try {
+
+            accountInfoService.updateAccountInfo(accountInfoDO);
+            result.success();
+        } catch (Exception e) {
+            result.setException(e);
+        }
+        return result;
     }
 
     /**

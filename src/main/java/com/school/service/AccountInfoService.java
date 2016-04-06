@@ -1,5 +1,6 @@
 package com.school.service;
 
+import com.school.domain.AccountInfoDO;
 import com.school.dto.upstream.AccountInformationDto;
 
 /**
@@ -14,4 +15,11 @@ public interface AccountInfoService {
      * @return
      */
     AccountInformationDto getAccountInfoDOByUserId(Integer userId);
+
+    /**
+     * 修改用户基本信息
+     *
+     * @param accountInfoDO
+     */
+    void updateAccountInfo(AccountInfoDO accountInfoDO) throws Exception;
 }

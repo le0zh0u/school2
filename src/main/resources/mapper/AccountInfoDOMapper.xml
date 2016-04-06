@@ -30,7 +30,7 @@
   </delete>
     <insert id="insert" parameterType="com.school.domain.AccountInfoDO" useGeneratedKeys="true" keyProperty="id">
         <!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">-->
-            <!--SELECT LAST_INSERT_ID() AS id-->
+        <!--SELECT LAST_INSERT_ID() AS id-->
         <!--</selectKey>-->
         insert into school_account_info (stu_code, name,
         nick_name, gender, head_portrait,
@@ -133,7 +133,7 @@
             <if test="majorCode != null">
                 major_code = #{majorCode,jdbcType=VARCHAR},
             </if>
-            CURRENT_TIMESTAMP
+            modify_time = CURRENT_TIMESTAMP
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>

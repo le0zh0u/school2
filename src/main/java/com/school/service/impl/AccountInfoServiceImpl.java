@@ -38,4 +38,12 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 
         return accountInformationDto;
     }
+
+    public void updateAccountInfo(AccountInfoDO accountInfoDO) throws Exception {
+        logger.info("start update account info");
+        if (accountInfoDO.getId() == null) {
+            throw new Exception("no params");
+        }
+        accountInfoDOMapper.updateByPrimaryKeySelective(accountInfoDO);
+    }
 }
