@@ -47,6 +47,34 @@ public class AccountController {
     }
 
     /**
+     * 注册用户
+     *
+     * @param loginName
+     * @param password
+     * @param stuCode
+     * @param name
+     * @param universityCode
+     * @return
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    @ResponseBody
+    public BizResult<String> registerAccount(String loginName, String password, String stuCode, String name,
+            String universityCode) {
+        logger.info("start register account");
+        BizResult<String> result = new BizResult<String>();
+        try {
+            accountService.registerAccount(loginName, password, stuCode, name, universityCode);
+            result.success();
+        } catch (Exception e) {
+            logger.error("register account failed.", e);
+            result.setException(e);
+        }
+
+        return result;
+
+    }
+
+    /**
      * 获取用户信息
      *
      * @param accountId

@@ -15,4 +15,16 @@ public interface AccountService {
      */
     AccountDO getAccountDOById(Integer id);
 
+    /**
+     * 注册新用户
+     *
+     * @param loginName
+     * @param password
+     * @param stuCode
+     * @param name
+     * @param universityCode
+     * @return
+     */
+    void registerAccount(String loginName, String password, String stuCode, String name,
+            String universityCode);
 }

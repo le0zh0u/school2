@@ -48,4 +48,9 @@ public class BizResult<T> {
         this.msg = e.getMessage();
     }
 
+    public void success() {
+        this.code = BizResultEnum.SUCCESS.getCode();
+        this.msg = BizResultEnum.SUCCESS.getMsg();
+    }
+
 }
