@@ -9,6 +9,8 @@ import java.util.List;
 public interface MessageDOMapper {
     int deleteByPrimaryKey(Integer id);
 
+    int deleteByMessageIdAndUserId(@Param("messageId") Integer messageId, @Param("userId") Integer userId);
+
     int insert(MessageDO record);
 
     int insertSelective(MessageDO record);

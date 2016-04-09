@@ -7,7 +7,8 @@ public enum BizResultEnum {
     SUCCESS("SUCCESS", "成功"),
     EXCEPTION_ERROR("SYSTEM_ERROR", "系统错误"),
 
-    MISSING_PARAMS("MISSING_PARAMS", "缺少参数");
+    MISSING_PARAMS("MISSING_PARAMS", "缺少参数"),
+    DEL_FAILED("DELETE_FAILED", "删除失败");
 
     private String code;
     private String msg;

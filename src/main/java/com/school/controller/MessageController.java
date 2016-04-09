@@ -2,6 +2,7 @@ package com.school.controller;
 
 import com.school.dto.upstream.BizResult;
 import com.school.dto.upstream.MessageItemDto;
+import com.school.enums.BizResultEnum;
 import com.school.service.MessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,9 +66,36 @@ public class MessageController {
             List<MessageItemDto> messageItemDtoList = messageService.findMessageListByAccountAndType(accountId, typeId);
             result.setData(messageItemDtoList);
         } catch (Exception e) {
-            logger.error("get message list by account and type",e);
+            logger.error("get message list by account and type", e);
             result.setException(e);
         }
+        return result;
+    }
+
+    /**
+     * 删除消息
+     *
+     * @param messageId
+     * @param accountId
+     * @return
+     */
+    @RequestMapping("/del/{accountId}/{messageId}")
+    @ResponseBody
+    public BizResult<String> deleteMessage(@PathVariable Integer messageId, @PathVariable Integer accountId) {
+        logger.info("start delete message by id");
+        BizResult<String> result = new BizResult<String>();
+        try {
+            int delLines = messageService.deleteMessage(messageId, accountId);
+            if (delLines > 0) {
+                result.success();
+            } else {
+                result.setFailed(BizResultEnum.DEL_FAILED);
+            }
+        } catch (Exception e) {
+            logger.error("delete message by id failed, messageId is {}", messageId, e);
+            result.setException(e);
+        }
+
         return result;
     }
 }

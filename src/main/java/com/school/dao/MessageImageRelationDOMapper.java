@@ -19,4 +19,6 @@ public interface MessageImageRelationDOMapper {
     int updateByPrimaryKey(MessageImageRelationDO record);
 
     List<MessageImageRelationDO> findMessageImageRelationListByMessageIdList(@Param("messageIdList") List<Integer> ids);
+
+    int deleteByMessageId(Integer messageId);
 }

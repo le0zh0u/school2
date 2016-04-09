@@ -125,4 +125,12 @@
         </foreach>
     </select>
 
+    <update id="deleteByMessageId">
+        update school_message_image_relation
+        set
+        status = 2,
+        modify_time = CURRENT_TIMESTAMP
+        where message_id = #{messageId,jdbcType=INTEGER}
+    </update>
+
 </mapper>

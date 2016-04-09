@@ -227,4 +227,15 @@ public class MessageServiceImpl implements MessageService {
 
         return list;
     }
+
+    public int deleteMessage(Integer messageId, Integer accountId) {
+
+        int delLines = messageDOMapper.deleteByMessageIdAndUserId(messageId, accountId);
+
+        if (delLines > 0) {
+            //删除成功,删除relation
+            messageImageRelationDOMapper.deleteByMessageId(messageId);
+        }
+        return delLines;
+    }
 }
