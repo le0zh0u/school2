@@ -74,6 +74,7 @@ public class AccountController {
 
     /**
      * 更新用户信息
+     *
      * @param accountInfoDO
      * @return
      */
