@@ -10,8 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -25,6 +29,14 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
+
+    public BizResult<String> addMessage(@RequestParam("studentPhoto") MultipartFile file, HttpServletRequest request, HttpServletResponse response){
+        logger.info("start add message");
+        BizResult<String> result = new BizResult<String>();
+
+
+        return result;
+    }
 
     /**
      * 查看自己发的消息以及他人评论等
