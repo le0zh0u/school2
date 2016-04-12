@@ -4,6 +4,8 @@ import com.school.dto.upstream.BizResult;
 import com.school.dto.upstream.MessageItemDto;
 import com.school.enums.BizResultEnum;
 import com.school.service.MessageService;
+import com.school.util.FileUploadUtil;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -30,9 +33,45 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    public BizResult<String> addMessage(@RequestParam("studentPhoto") MultipartFile file, HttpServletRequest request, HttpServletResponse response){
+
+    @RequestMapping("/pic")
+    @ResponseBody
+    public BizResult<String> addPic(@RequestParam("studentPhoto") MultipartFile file, HttpServletRequest request) {
+
+        BizResult<String> result = new BizResult<String>();
+        try {
+            String filePath = FileUploadUtil.uploadFile(file, request);
+            logger.info("filePath:" + filePath);
+            //            response.setContentType("text/html;charset=utf8");
+            //            response.getWriter().write("<img src='" + filePath + "'/>");
+            result.setData(filePath);
+        } catch (Exception e) {
+            result.setException(e);
+        }
+        return result;
+    }
+
+    @RequestMapping("/getPic")
+    public void getPic(String fileName, HttpServletResponse response) throws Exception {
+        OutputStream os = response.getOutputStream();
+        try {
+            response.reset();
+            response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+            response.setContentType("image/jpeg; charset=utf-8");
+            os.write(FileUtils.readFileToByteArray(FileUploadUtil.getFile(fileName)));
+            os.flush();
+
+        } finally {
+            if (os != null) {
+                os.close();
+            }
+        }
+    }
+
+    public BizResult<String> addMessage() {
         logger.info("start add message");
         BizResult<String> result = new BizResult<String>();
+
 
 
         return result;

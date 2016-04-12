@@ -158,10 +158,10 @@
         #{typeId, jdbcType=INTEGER}
     </select>
 
-    <delete id="deleteByMessageIdAndUserId">
-        delete from school_message
-        where id = #{messageId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
-    </delete>
+    <!--<delete id="deleteByMessageIdAndUserId">-->
+        <!--delete from school_message-->
+        <!--where id = #{messageId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}-->
+    <!--</delete>-->
 
     <update id="deleteByMessageIdAndUserId" parameterType="com.school.domain.MessageDO">
         update school_message
