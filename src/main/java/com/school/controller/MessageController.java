@@ -36,7 +36,7 @@ public class MessageController {
 
     @RequestMapping("/pic")
     @ResponseBody
-    public BizResult<String> addPic(@RequestParam("studentPhoto") MultipartFile file, HttpServletRequest request) {
+    public BizResult<String> addPic(@RequestParam("photo") MultipartFile file, HttpServletRequest request) {
 
         BizResult<String> result = new BizResult<String>();
         try {
