@@ -44,6 +44,7 @@ public class MessageController {
             logger.info("filePath:" + filePath);
             //            response.setContentType("text/html;charset=utf8");
             //            response.getWriter().write("<img src='" + filePath + "'/>");
+
             result.setData(filePath);
         } catch (Exception e) {
             result.setException(e);
@@ -60,7 +61,6 @@ public class MessageController {
             response.setContentType("image/jpeg; charset=utf-8");
             os.write(FileUtils.readFileToByteArray(FileUploadUtil.getFile(fileName)));
             os.flush();
-
         } finally {
             if (os != null) {
                 os.close();
