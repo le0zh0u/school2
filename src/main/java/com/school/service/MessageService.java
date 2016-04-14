@@ -1,5 +1,6 @@
 package com.school.service;
 
+import com.school.dto.upstream.MessageAddDto;
 import com.school.dto.upstream.MessageItemDto;
 import com.school.dto.upstream.WatchedMessageItemDto;
 
@@ -37,4 +38,11 @@ public interface MessageService {
      * @return
      */
     int deleteMessage(Integer messageId, Integer accountId);
+
+    /**
+     * 添加message
+     * @param messageAddDto
+     * @return
+     */
+    MessageAddDto addMessage(MessageAddDto messageAddDto);
 }

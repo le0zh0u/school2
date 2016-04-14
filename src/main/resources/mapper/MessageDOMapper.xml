@@ -25,12 +25,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.school.domain.MessageDO">
-    insert into school_message (id, user_id, content, 
+    insert into school_message (user_id, content,
       type, status, university_code,create_time,
       modify_time)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
-      #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{universityCode, jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
-      #{modifyTime,jdbcType=TIMESTAMP})
+    values (#{userId,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR},
+      #{type,jdbcType=INTEGER}, 1, #{universityCode, jdbcType=VARCHAR},CURRENT_TIMESTAMP ,
+      CURRENT_TIMESTAMP )
   </insert>
     <insert id="insertSelective" parameterType="com.school.domain.MessageDO">
         insert into school_message
@@ -159,8 +159,8 @@
     </select>
 
     <!--<delete id="deleteByMessageIdAndUserId">-->
-        <!--delete from school_message-->
-        <!--where id = #{messageId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}-->
+    <!--delete from school_message-->
+    <!--where id = #{messageId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}-->
     <!--</delete>-->
 
     <update id="deleteByMessageIdAndUserId" parameterType="com.school.domain.MessageDO">
@@ -170,4 +170,11 @@
         modify_time = CURRENT_TIMESTAMP
         where id = #{messageId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
     </update>
+
+    <select id="getMessageByUserAndContent" resultMap="com.school.domain.MessageDO">
+        select
+        <include refid="Base_Column_List"/>
+        from school_message
+        where status = 1 and user_id = #{userId, jdbcType=INTEGER} and content = #{content, jdbcTYpe=VARCHAR}
+    </select>
 </mapper>

@@ -46,4 +46,12 @@ public interface MessageDOMapper {
      * @return
      */
     List<MessageDO> findMessageListByUniversityAndType(@Param("universityCode") String universityCode, @Param("typeId") Integer typeId);
+
+    /**
+     * 根据用户id和内容查询消息
+     * @param userId
+     * @param content
+     * @return
+     */
+    MessageDO getMessageByUserAndContent(Integer userId, String content);
 }

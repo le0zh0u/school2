@@ -24,12 +24,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.school.domain.MessageImageRelationDO">
-    insert into school_message_image_relation (id, message_id, image_url, 
+    insert into school_message_image_relation ( message_id, image_url,
       image_thumbnail_url, status, create_time, 
       modify_time)
-    values (#{id,jdbcType=INTEGER}, #{messageId,jdbcType=INTEGER}, #{imageUrl,jdbcType=VARCHAR}, 
-      #{imageThumbnailUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{modifyTime,jdbcType=TIMESTAMP})
+    values ( #{messageId,jdbcType=INTEGER}, #{imageUrl,jdbcType=VARCHAR},
+      #{imageThumbnailUrl,jdbcType=VARCHAR},1, CURRENT_TIMESTAMP ,
+      CURRENT_TIMESTAMP)
   </insert>
     <insert id="insertSelective" parameterType="com.school.domain.MessageImageRelationDO">
         insert into school_message_image_relation
@@ -132,5 +132,4 @@
         modify_time = CURRENT_TIMESTAMP
         where message_id = #{messageId,jdbcType=INTEGER}
     </update>
-
 </mapper>

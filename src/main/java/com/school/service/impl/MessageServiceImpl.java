@@ -8,6 +8,7 @@ import com.school.domain.AccountInfoDO;
 import com.school.domain.MessageDO;
 import com.school.domain.MessageImageRelationDO;
 import com.school.dto.MessageCriticsDto;
+import com.school.dto.upstream.MessageAddDto;
 import com.school.dto.upstream.MessageItemDto;
 import com.school.dto.upstream.WatchedMessageItemDto;
 import com.school.enums.CommentTypeEnum;
@@ -237,5 +238,27 @@ public class MessageServiceImpl implements MessageService {
             messageImageRelationDOMapper.deleteByMessageId(messageId);
         }
         return delLines;
+    }
+
+    public MessageAddDto addMessage(MessageAddDto messageAddDto) {
+
+        messageDOMapper.insert(messageAddDto);
+        MessageDO messageDO = messageDOMapper.getMessageByUserAndContent(messageAddDto.getUserId(),messageAddDto.getContent());
+        if (!CollectionUtils.isEmpty(messageAddDto.getImageList())){
+            //添加图片
+            int messageId = messageDO.getId();
+            for (String imageUrl: messageAddDto.getImageList()){
+
+                MessageImageRelationDO messageImageRelationDO = new MessageImageRelationDO();
+                messageImageRelationDO.setMessageId(messageId);
+                messageImageRelationDO.setImageThumbnailUrl(imageUrl);
+                messageImageRelationDO.setImageUrl(imageUrl);
+                messageImageRelationDO.setStatus(1);
+                messageImageRelationDOMapper.insert(messageImageRelationDO);
+            }
+        }
+        messageAddDto.setId(messageDO.getId());
+
+        return messageAddDto;
     }
 }

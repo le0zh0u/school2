@@ -1,6 +1,7 @@
 package com.school.controller;
 
 import com.school.dto.upstream.BizResult;
+import com.school.dto.upstream.MessageAddDto;
 import com.school.dto.upstream.MessageItemDto;
 import com.school.enums.BizResultEnum;
 import com.school.service.MessageService;
@@ -68,11 +69,25 @@ public class MessageController {
         }
     }
 
-    public BizResult<String> addMessage() {
+    /**
+     * 添加消息接口
+     *
+     * @param messageAddDto
+     * @return
+     */
+    @RequestMapping("/add")
+    @ResponseBody
+    public BizResult<MessageAddDto> addMessage(MessageAddDto messageAddDto) {
         logger.info("start add message");
-        BizResult<String> result = new BizResult<String>();
+        BizResult<MessageAddDto> result = new BizResult<MessageAddDto>();
+        try {
+            MessageAddDto addDto = messageService.addMessage(messageAddDto);
 
-
+            result.setData(addDto);
+        } catch (Exception e) {
+            logger.error("add message failed");
+            result.setException(e);
+        }
 
         return result;
     }
