@@ -35,6 +35,12 @@ public class MessageController {
     private MessageService messageService;
 
 
+    /**
+     * 上传图片
+     * @param file
+     * @param request
+     * @return
+     */
     @RequestMapping("/pic")
     @ResponseBody
     public BizResult<String> addPic(@RequestParam("photo") MultipartFile file, HttpServletRequest request) {
@@ -53,6 +59,12 @@ public class MessageController {
         return result;
     }
 
+    /**
+     * 获取图片
+     * @param fileName
+     * @param response
+     * @throws Exception
+     */
     @RequestMapping("/getPic")
     public void getPic(String fileName, HttpServletResponse response) throws Exception {
         OutputStream os = response.getOutputStream();
