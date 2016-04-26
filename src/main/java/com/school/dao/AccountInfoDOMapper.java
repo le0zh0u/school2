@@ -1,6 +1,7 @@
 package com.school.dao;
 
 import com.school.domain.AccountInfoDO;
+import org.springframework.stereotype.Repository;
 
 public interface AccountInfoDOMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +15,8 @@ public interface AccountInfoDOMapper {
     int updateByPrimaryKeySelective(AccountInfoDO record);
 
     int updateByPrimaryKey(AccountInfoDO record);
+
+    AccountInfoDO selectByStuCode(String stuCode);
+
+    String getStuCodeById(Integer id);
 }

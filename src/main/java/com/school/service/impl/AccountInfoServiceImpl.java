@@ -25,8 +25,8 @@ public class AccountInfoServiceImpl implements AccountInfoService {
 
     public AccountInformationDto getAccountInfoDOByUserId(Integer userId) {
         logger.info("start get account info do by user id");
-
         AccountInfoDO accountInfoDO = accountInfoDOMapper.selectByPrimaryKey(userId);
+
         AccountInformationDto accountInformationDto = AccountInformationDto.convertFromAccountInfoDO(accountInfoDO);
 
         //转换code为name

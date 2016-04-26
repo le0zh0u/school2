@@ -24,14 +24,19 @@
         from school_account_info
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectByStuCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        FROM school_account_info
+        where stu_code=#{stuCode, jdbcType=VARCHAR}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from school_account_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.school.domain.AccountInfoDO" useGeneratedKeys="true" keyProperty="id">
-        <!--<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">-->
-        <!--SELECT LAST_INSERT_ID() AS id-->
-        <!--</selectKey>-->
         insert into school_account_info (stu_code, name,
         nick_name, gender, head_portrait,
         university_code, college_code, major_code,
@@ -150,4 +155,8 @@
       modify_time = CURRENT_TIMESTAMP
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <select id="getStuCodeById" resultType="java.lang.String" parameterType="java.lang.Integer">
+        select stu_code from school_account_info where id = #{id,javaType=Integer,jdbcType=INTEGER}
+    </select>
 </mapper>

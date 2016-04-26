@@ -171,7 +171,7 @@
         where id = #{messageId,jdbcType=INTEGER} and user_id = #{userId,jdbcType=INTEGER}
     </update>
 
-    <select id="getMessageByUserAndContent" resultMap="com.school.domain.MessageDO">
+    <select id="getMessageByUserAndContent" resultType="com.school.domain.MessageDO">
         select
         <include refid="Base_Column_List"/>
         from school_message
